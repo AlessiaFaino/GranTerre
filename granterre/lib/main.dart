@@ -1,21 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:granterre/components/fab.dart';
+import 'package:granterre/controllers/simulation.dart';
+import 'package:granterre/models/machine_data.dart';
 import 'package:granterre/views/dashboard.dart';
 import 'package:granterre/views/home.dart';
 import 'package:granterre/views/simulation.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(
+    MultiProvider(
+      providers: [
+        StreamProvider<MachineData?>.value(
+          value: SimulatorController().dataConfezionatriceStream,
+          initialData: null,
+        ),
+        StreamProvider<MachineData?>.value(
+          value: SimulatorController().dataIncartonatriceStream,
+          initialData: null,
+        ),
+      ],
+      child: const MyApp()
+    )
+  );
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-
       debugShowCheckedModeBanner: false,
       title: 'GranTerre',
       theme: ThemeData(
@@ -57,7 +73,8 @@ class _MyHomePageState extends State<MyHomePage> {
         iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: Colors.teal,
         title: Text(widget.title,
-          style: const TextStyle(color:Colors.white)),
+          style: const TextStyle(color:Colors.white)
+        ),
         centerTitle: true,
         leading: Builder(
           builder: (context) {
@@ -78,7 +95,12 @@ class _MyHomePageState extends State<MyHomePage> {
               decoration: BoxDecoration(
                 color: Colors.teal,
               ),
-              child: Text('Menu',style: TextStyle(color:Colors.white)),
+              child: Text(
+                'Menu', 
+                style: TextStyle(color:Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 24
+              )),
 
             ),
             ListTile(
@@ -113,10 +135,9 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child: _widgetOptions[_selectedIndex],
+        child: _widgetOptions[_selectedIndex]
       ),
       floatingActionButton: const AppFAB()
     );
   }
 }
-

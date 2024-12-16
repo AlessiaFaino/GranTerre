@@ -20,7 +20,7 @@ class _AppFABState extends State<AppFAB> {
   void _toggleConfezionatriceSimulation() {
     setState(() {
       simulationConfezionatriceOn = !simulationConfezionatriceOn;
-      simulationConfezionatriceOn ? simulatorController.startConfezionatrice(context) : simulatorController.pauseConfezionatrice();
+      simulationConfezionatriceOn ? simulatorController.startFetchingData(context, 0) : simulatorController.pauseFetchingData(context, 0);
     });
     AppUtils.showSnackBar(context, "Simulazione ${simulationConfezionatriceOn ? "avviata" : "interrotta"} con successo!", false);
   }
@@ -28,7 +28,7 @@ class _AppFABState extends State<AppFAB> {
   void _toggleIncartonatriceSimulation() {
     setState(() {
       simulationIncartonatriceOn = !simulationIncartonatriceOn;
-      simulationIncartonatriceOn ? simulatorController.startIncartonatrice(context) : simulatorController.pauseIncartonatrice();
+      simulationIncartonatriceOn ? simulatorController.startFetchingData(context, 1) : simulatorController.pauseFetchingData(context, 1);
     });
     AppUtils.showSnackBar(context, "Simulazione ${simulationIncartonatriceOn ? "avviata" : "interrotta"} con successo!", false);
   }
@@ -41,6 +41,7 @@ class _AppFABState extends State<AppFAB> {
           bottom: 80,
           right: 16,
           child: FloatingActionButton.extended(
+            heroTag: "fab_confezionatrice",
             label: Text("Simulazione Confezionatrice ${simulationConfezionatriceOn ? "in corso" : "in pausa"}"),
             tooltip: "${simulationConfezionatriceOn ? "Interrompi" : "Avvia"} simulazione",
             onPressed: _toggleConfezionatriceSimulation,
@@ -57,6 +58,7 @@ class _AppFABState extends State<AppFAB> {
           bottom: 16,
           right: 16,
           child: FloatingActionButton.extended(
+            heroTag: "fab_incartonatrice",
             label: Text("Simulazione Incartonatrice ${simulationIncartonatriceOn ? "in corso" : "in pausa"}"),
             tooltip: "${simulationIncartonatriceOn ? "Interrompi" : "Avvia"} simulazione",
             onPressed: _toggleIncartonatriceSimulation,

@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter/services.dart' show Uint8List, rootBundle;
 import 'package:csv2json/csv2json.dart';
+import 'package:file_picker/file_picker.dart';
 
 class AppUtils {
   static void showSnackBar(BuildContext context, String message, bool isError) {
@@ -56,6 +57,23 @@ class AppUtils {
       if (!context.mounted) return [];
       AppUtils.showSnackBar(context, "Impossibile convertire il File CSV in formato JSON", true);
       return [];
+    }
+  }
+
+  static Future<Uint8List?> getFile() async {
+    try {
+      final result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['csv'],
+      );
+      if (result != null && result.files.isNotEmpty) {
+        final file = result.files.single;
+        return file.bytes;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
     }
   }
 
